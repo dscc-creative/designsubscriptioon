@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSCC | Creative Department</title>
+    <title>DS Creative Design | Membership</title>
     
     <!-- ERROR HANDLER -->
     <script>
@@ -86,6 +86,9 @@
         const Loader2 = ({ className }) => <Icon name="loader-2" className={className} />;
         const Check = ({ className }) => <Icon name="check" className={className} />;
         const ArrowLeft = ({ className }) => <Icon name="arrow-left" className={className} />;
+        const X = ({ className }) => <Icon name="x" className={className} />;
+        const Upload = ({ className }) => <Icon name="upload-cloud" className={className} />;
+        const Video = ({ className }) => <Icon name="video" className={className} />;
 
         // --- DATA: PROJECTS ---
         const projectsData = [
@@ -213,7 +216,7 @@
             }, []);
             return (
                 <div className="fixed inset-0 bg-black z-[200] flex flex-col justify-between p-6 md:p-12 text-white origin-top transition-transform duration-1000 ease-in-out">
-                    <div className="text-xl font-bold tracking-tighter lowercase">dscc</div>
+                    <div className="text-xl font-bold tracking-tighter lowercase">ds creative design</div>
                     <div className="text-[12vw] font-bold leading-none tracking-tighter self-end">{count}%</div>
                 </div>
             );
@@ -226,26 +229,153 @@
             </div>
         );
 
+        // --- CHECKOUT MODAL ---
+        const CheckoutModal = ({ onClose }) => {
+            const [selectedTier, setSelectedTier] = useState('monthly');
+            const [agreed, setAgreed] = useState(false);
+
+            const tiers = {
+                monthly: { price: '$5,000', label: 'Monthly' },
+                quarterly: { price: '$13,500', label: 'Quarterly', note: 'billed every 3 months' },
+                annual: { price: '$48,000', label: 'Annual', note: 'billed yearly' },
+            };
+
+            const handleCheckout = () => {
+                // ACTUAL STRIPE LINKS
+                const stripeLinks = {
+                    monthly: "https://buy.stripe.com/3cIdRabgB6Ec0sifWg9IQ01",
+                    quarterly: "https://buy.stripe.com/cNi8wQ5Wh7Igdf425q9IQ02",
+                    annual: "https://buy.stripe.com/3cIbJ25Wh8Mk2AqdO89IQ03"
+                };
+
+                const link = stripeLinks[selectedTier];
+                window.location.href = link;
+            };
+
+            return (
+                <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-6 animate-in fade-in duration-300">
+                    <div className="bg-white text-black w-full max-w-lg rounded-3xl overflow-hidden relative">
+                        <button onClick={onClose} className="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition-colors"><X className="w-6 h-6" /></button>
+                        
+                        <div className="p-8 md:p-12">
+                            <h2 className="text-3xl font-bold lowercase tracking-tighter mb-2">Join the Membership</h2>
+                            <p className="text-gray-500 mb-8 lowercase">Select your billing cycle to begin.</p>
+                            
+                            <div className="space-y-4 mb-8">
+                                {Object.entries(tiers).map(([key, tier]) => (
+                                    <div 
+                                        key={key}
+                                        onClick={() => setSelectedTier(key)}
+                                        className={`p-4 border-2 rounded-xl cursor-pointer flex justify-between items-center transition-all ${selectedTier === key ? 'border-black bg-gray-50' : 'border-gray-100 hover:border-gray-200'}`}
+                                    >
+                                        <div>
+                                            <div className="font-bold lowercase text-lg">{tier.label}</div>
+                                            {tier.note && <div className="text-xs text-gray-400 lowercase">{tier.note}</div>}
+                                        </div>
+                                        <div className="text-xl font-bold">{tier.price}</div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="mb-8">
+                                <label className="flex items-start gap-3 cursor-pointer group">
+                                    <div className={`w-5 h-5 border-2 rounded flex items-center justify-center flex-shrink-0 mt-1 transition-colors ${agreed ? 'bg-black border-black' : 'border-gray-300 group-hover:border-black'}`}>
+                                        {agreed && <Check className="w-3 h-3 text-white" />}
+                                    </div>
+                                    <input type="checkbox" className="hidden" onChange={(e) => setAgreed(e.target.checked)} />
+                                    <span className="text-sm text-gray-500 leading-tight">
+                                        I agree to the <a href="#" className="underline text-black">Terms of Service</a> and understand the scope of work provided in this membership.
+                                    </span>
+                                </label>
+                            </div>
+
+                            <button 
+                                onClick={handleCheckout}
+                                disabled={!agreed}
+                                className="w-full bg-black text-white py-4 rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed lowercase"
+                            >
+                                Proceed to Checkout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
+        // --- CLIENT PORTAL MOCKUP (VISUALIZATION) ---
+        const PortalModal = ({ onClose }) => {
+            return (
+                <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-6 animate-in fade-in duration-300">
+                    <div className="bg-white text-black w-full max-w-4xl h-[80vh] rounded-3xl overflow-hidden relative flex flex-col">
+                        
+                        {/* Sidebar */}
+                        <div className="flex h-full">
+                            <div className="w-64 bg-gray-50 p-8 border-r border-gray-100 hidden md:flex flex-col justify-between">
+                                <div>
+                                    <div className="text-xl font-bold tracking-tighter lowercase mb-12">dscc</div>
+                                    <div className="space-y-4">
+                                        <div className="text-sm font-bold bg-black text-white px-4 py-2 rounded-lg cursor-pointer">dashboard</div>
+                                        <div className="text-sm text-gray-500 px-4 py-2 cursor-pointer hover:text-black">active requests</div>
+                                        <div className="text-sm text-gray-500 px-4 py-2 cursor-pointer hover:text-black">brand assets</div>
+                                        <div className="text-sm text-gray-500 px-4 py-2 cursor-pointer hover:text-black">invoices</div>
+                                    </div>
+                                </div>
+                                <div className="text-xs text-gray-400">client: signature homes</div>
+                            </div>
+                            
+                            {/* Main Content */}
+                            <div className="flex-1 p-8 md:p-12 overflow-y-auto">
+                                <div className="flex justify-between items-center mb-12">
+                                    <h2 className="text-4xl font-bold lowercase tracking-tighter">onboarding</h2>
+                                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full"><X className="w-6 h-6" /></button>
+                                </div>
+                                
+                                <p className="text-xl text-gray-500 mb-12 max-w-lg lowercase">welcome to the membership. to get started, please upload your brand files and record a quick video brief.</p>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    {/* Upload Box */}
+                                    <div className="border-2 border-dashed border-gray-200 rounded-2xl p-8 flex flex-col items-center justify-center text-center hover:border-black transition-colors cursor-pointer group h-64">
+                                        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                            <Upload className="w-6 h-6 text-gray-400 group-hover:text-black" />
+                                        </div>
+                                        <h3 className="font-bold lowercase text-lg">upload brand assets</h3>
+                                        <p className="text-sm text-gray-400 mt-2 lowercase">logos, fonts, guidelines (AI, PDF)</p>
+                                    </div>
+
+                                    {/* Loom Box */}
+                                    <div className="bg-black text-white rounded-2xl p-8 flex flex-col justify-between h-64 hover:scale-[1.02] transition-transform cursor-pointer">
+                                        <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                                            <Video className="w-6 h-6 text-white" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold lowercase text-2xl mb-2">record video brief</h3>
+                                            <p className="text-sm text-gray-400 lowercase">skip the meeting. tell us what you need via loom.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
         // --- PROJECT DETAIL ---
         const ProjectDetail = ({ project, onBack }) => {
             useEffect(() => { window.scrollTo(0, 0); }, []);
-
-            // Handle Logo GIFs vs Photos differently
-            const heroObjectFit = project.heroFit || 'cover'; // Default to cover (zoom)
+            const heroObjectFit = project.heroFit || 'cover';
             
             return (
                 <div className="min-h-screen bg-white animate-in slide-in-from-bottom-8 fade-in duration-700">
                     <div className="noise-overlay"></div>
                     
-                    {/* Navigation */}
                     <div className="fixed top-0 left-0 w-full p-6 md:p-12 flex justify-between items-center z-50 mix-blend-difference text-white">
                         <button onClick={onBack} className="text-lg font-bold lowercase hover:opacity-50 transition-opacity flex items-center gap-2">
                             <ArrowLeft className="w-5 h-5" /> back
                         </button>
-                        <div className="text-lg font-bold lowercase tracking-tighter">dscc</div>
+                        <div className="text-lg font-bold lowercase tracking-tighter">ds creative design</div>
                     </div>
 
-                    {/* HERO */}
                     <div className="h-[50vh] md:h-[80vh] w-full bg-neutral-900 relative">
                         <img 
                             src={project.heroImage} 
@@ -255,48 +385,33 @@
                         <div className="absolute inset-0 bg-black/10"></div>
                     </div>
 
-                    {/* CONTENT */}
                     <div className="w-full bg-white relative z-10">
-                        {/* GALLERY - Full Width with Grid Support */}
                         <div className="w-full max-w-[1920px] mx-auto py-0 space-y-0">
                             {project.images.map((item, idx) => {
-                                // If it's an array, render a grid
                                 if (Array.isArray(item)) {
                                     return (
                                         <Reveal key={idx} delay={idx * 50}>
                                             <div className="grid grid-cols-1 md:grid-cols-3 gap-0 w-full">
                                                 {item.map((subImg, subIdx) => (
                                                     <div key={subIdx} className="w-full aspect-square relative">
-                                                        <img 
-                                                            src={subImg} 
-                                                            alt={`Detail ${subIdx}`} 
-                                                            className="absolute inset-0 w-full h-full object-cover" 
-                                                        />
+                                                        <img src={subImg} alt={`Detail ${subIdx}`} className="absolute inset-0 w-full h-full object-cover" />
                                                     </div>
                                                 ))}
                                             </div>
                                         </Reveal>
                                     );
                                 }
-                                // If it's a string, render full width
                                 return (
                                     <Reveal key={idx} delay={idx * 50}>
                                         <div className="w-full">
-                                            <img 
-                                                src={item} 
-                                                alt={`Visual ${idx}`} 
-                                                className="w-full h-auto block" 
-                                            />
+                                            <img src={item} alt={`Visual ${idx}`} className="w-full h-auto block" />
                                         </div>
                                     </Reveal>
                                 );
                             })}
                         </div>
-
                         <div className="w-full px-6 lg:px-12 py-24 text-center">
-                             <button onClick={onBack} className="text-2xl text-gray-400 hover:text-black transition-colors lowercase border-b border-transparent hover:border-black pb-1">
-                                close project
-                            </button>
+                             <button onClick={onBack} className="text-2xl text-gray-400 hover:text-black transition-colors lowercase border-b border-transparent hover:border-black pb-1">close project</button>
                         </div>
                     </div>
                 </div>
@@ -312,6 +427,8 @@
             const [briefResult, setBriefResult] = useState('');
             const [isGenerating, setIsGenerating] = useState(false);
             const [billingCycle, setBillingCycle] = useState('monthly');
+            const [showCheckout, setShowCheckout] = useState(false);
+            const [showPortal, setShowPortal] = useState(false);
             const cursorRef = useRef(null);
             
             useEffect(() => {
@@ -357,17 +474,17 @@
                 monthly: {
                     price: "$5,000",
                     period: "/ month",
-                    desc: "flexible. pause anytime."
+                    desc: "maximum flexibility. perfect for cash flow management and short-term sprints. pause anytime."
                 },
                 quarterly: {
                     price: "$4,500",
                     period: "/ month",
-                    desc: "billed $13,500 quarterly."
+                    desc: "save 10% ($1,500). ideal for securing momentum across a full quarter."
                 },
                 annually: {
                     price: "$4,000",
                     period: "/ month",
-                    desc: "billed $48,000 annually."
+                    desc: "best value. save 20% ($12,000/yr) to lock in your creative department year-round."
                 }
             };
 
@@ -375,30 +492,33 @@
                 <div className="animate-in fade-in duration-1000">
                     <div ref={cursorRef} className="custom-cursor hidden md:block"></div>
                     <div className="noise-overlay"></div>
+                    
+                    {/* MODALS */}
+                    {showCheckout && <CheckoutModal onClose={() => setShowCheckout(false)} />}
+                    {showPortal && <PortalModal onClose={() => setShowPortal(false)} />}
 
                     {/* HEADER */}
-                    <header className="relative px-6 py-24 md:py-40 lg:px-12 max-w-screen-2xl mx-auto flex flex-col justify-between min-h-[90vh]">
-                        <div className="flex justify-between items-center w-full border-b border-black pb-4 mb-20">
-                            <Reveal><div className="text-xl font-bold tracking-tighter lowercase">dscc</div></Reveal>
-                            <Reveal delay={100}><button className="text-sm font-medium hover:opacity-50 transition-opacity lowercase">login</button></Reveal>
+                    <header className="relative px-6 py-24 md:py-40 lg:px-12 max-w-screen-2xl mx-auto flex flex-col items-center justify-between min-h-[90vh] text-center">
+                        <div className="flex justify-between items-center w-full border-b border-black pb-4 mb-20 absolute top-6 left-0 px-6 lg:px-12">
+                            <Reveal><div className="text-xl font-bold tracking-tighter lowercase">ds creative design</div></Reveal>
+                            <Reveal delay={100}><button onClick={() => setShowPortal(true)} className="text-sm font-medium hover:opacity-50 transition-opacity lowercase">login</button></Reveal>
                         </div>
-                        <div className="flex flex-col gap-8 z-10">
-                            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.85] lowercase">
+                        
+                        <div className="flex flex-col gap-8 z-10 max-w-4xl mx-auto mt-20">
+                            {/* UPDATED TYPOGRAPHY: Even tighter leading (0.65) and italics */}
+                            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.65] lowercase">
                                 <Reveal delay={200}>your brand.</Reveal>
-                                <Reveal delay={350}>executed.</Reveal>
+                                <Reveal delay={350}><span className="italic">executed.</span></Reveal>
                             </h1>
                             <Reveal delay={500}>
-                                <p className="max-w-xl text-xl md:text-2xl leading-relaxed text-gray-600 lowercase">
+                                <p className="max-w-xl mx-auto text-xl md:text-2xl leading-relaxed text-gray-600 lowercase mt-8">
                                     creative direction and senior execution for founders who need visual authority, clarity, and true brand stewardship.
                                 </p>
                             </Reveal>
                         </div>
-                        <div className="flex flex-col md:flex-row gap-4 mt-12 md:mt-24">
+                        <div className="flex flex-col md:flex-row gap-4 mt-12">
                             <Reveal delay={700}>
-                                <button className="bg-black text-white px-8 py-5 text-xl font-medium rounded-full hover:scale-105 transition-transform duration-300 lowercase w-full md:w-auto">subscribe now</button>
-                            </Reveal>
-                            <Reveal delay={800}>
-                                <button className="bg-white text-black border border-black px-8 py-5 text-xl font-medium rounded-full hover:bg-black hover:text-white hover:scale-105 transition-all duration-300 lowercase w-full md:w-auto">book a call</button>
+                                <button onClick={() => setShowCheckout(true)} className="bg-black text-white px-8 py-5 text-xl font-medium rounded-full hover:scale-105 transition-transform duration-300 lowercase w-full md:w-auto">start your membership</button>
                             </Reveal>
                         </div>
                     </header>
@@ -471,6 +591,13 @@
                                 </div>
                             ))}
                             <div className="hidden md:block min-w-[5vw] shrink-0"></div>
+                        </div>
+
+                        {/* NEW CTA UNDER SELECTED WORK */}
+                        <div className="flex justify-center mt-8">
+                            <Reveal>
+                                <button onClick={() => setShowCheckout(true)} className="bg-black text-white px-8 py-4 text-lg font-medium rounded-full hover:scale-105 transition-transform duration-300 lowercase">start your membership</button>
+                            </Reveal>
                         </div>
                     </section>
                     
@@ -567,6 +694,11 @@
                                     <p className="text-xl text-gray-500 lowercase">{pricingOptions[billingCycle].desc}</p>
                                 </Reveal>
                                 
+                                {/* NEW CTA INSIDE PRICING */}
+                                <div className="mt-8 mb-24">
+                                    <button onClick={() => setShowCheckout(true)} className="bg-black text-white px-12 py-5 text-xl font-medium rounded-full hover:scale-105 transition-transform duration-300 lowercase">subscribe now</button>
+                                </div>
+                                
                                 <div className="max-w-3xl mx-auto space-y-4 mt-24 text-left">
                                     {[
                                     { q: "why not a full-time hire?", a: "a senior designer is one person. dscc is a system. you get creative director oversight and a team of specialists for less than the cost of one employee." },
@@ -590,7 +722,7 @@
                     </section>
 
                     <footer className="bg-black text-white py-24 px-6 text-center">
-                        <h2 className="text-[15vw] font-bold tracking-tighter leading-none opacity-20 select-none">dscc</h2>
+                        <h2 className="text-[10vw] font-bold tracking-tighter leading-none opacity-20 select-none">ds creative design</h2>
                         <div className="mt-12 flex justify-center gap-8 text-sm text-gray-500 lowercase">
                             <a href="#" className="hover:text-white">twitter</a>
                             <a href="#" className="hover:text-white">instagram</a>
