@@ -3,22 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSCC Agency Prototype</title>
+    <title>DSCC | Creative Department</title>
     
-    <!-- 1. Load Tailwind CSS (Styling) -->
+    <!-- ERROR HANDLER -->
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            document.body.innerHTML = '<div style="color:red; padding:20px; font-family:monospace; background:black; height:100vh;"><h1>CRASH REPORT</h1><p>' + message + '</p><p>Line: ' + lineno + '</p></div>';
+        };
+    </script>
+
+    <!-- 1. Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- 2. Load React & ReactDOM -->
+    <!-- 2. Load React & ReactDOM (Standard Unpkg Version) -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     
-    <!-- 3. Load Babel (to understand JSX) -->
+    <!-- 3. Load Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <!-- 4. Load Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Custom Config for Tailwind -->
+    <!-- Custom Config -->
     <script>
         tailwind.config = {
             theme: {
@@ -41,39 +48,21 @@
     </script>
 
     <style>
-        /* Global Smoothness */
         html { scroll-behavior: smooth; cursor: none; }
-        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #ffffff; color: #000000; }
         
-        /* Animation Utilities */
         .ease-out-expo { transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
-        .elastic { transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Custom Cursor */
         .custom-cursor {
-            pointer-events: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 30px;
-            height: 30px;
-            background: white;
-            border-radius: 50%;
-            mix-blend-mode: difference;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            transition: transform 0.1s ease-out;
+            pointer-events: none; position: fixed; top: 0; left: 0; width: 30px; height: 30px;
+            background: white; border-radius: 50%; mix-blend-mode: difference;
+            transform: translate(-50%, -50%); z-index: 9999; transition: transform 0.1s ease-out;
         }
 
-        /* Noise Texture */
         .noise-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 50;
-            opacity: 0.05;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; opacity: 0.05;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
     </style>
@@ -85,28 +74,93 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // --- ICONS (Lucide workaround for CDN) ---
+        // --- ICONS ---
         const Icon = ({ name, className }) => {
-            useEffect(() => {
-                if (window.lucide) {
-                    window.lucide.createIcons();
-                }
-            }, [name]);
+            useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [name]);
             return <i data-lucide={name} className={className}></i>;
         };
         
-        // --- Defined Icons for direct usage ---
+        // Define specific icons
         const Sparkles = ({ className }) => <Icon name="sparkles" className={className} />;
         const Copy = ({ className }) => <Icon name="copy" className={className} />;
         const Loader2 = ({ className }) => <Icon name="loader-2" className={className} />;
         const Check = ({ className }) => <Icon name="check" className={className} />;
+        const ArrowLeft = ({ className }) => <Icon name="arrow-left" className={className} />;
+
+        // --- DATA: PROJECTS ---
+        const projectsData = [
+            {
+                id: 'signature-homes',
+                title: "signature homes",
+                category: "proposal deck",
+                description: "converting a luxury real estate vision into a high-stakes proposal narrative.",
+                tags: ["pitch deck", "strategy", "copywriting"],
+                context: "signature homes needed to secure a multi-million dollar partnership. we stripped away the corporate jargon and built a visual narrative that felt as premium as the properties they build.",
+                heroImage: "https://i.postimg.cc/PxGyqMjH/25-SSCH-Shrodrick-Spikes-Signature-Homes-Logo-Redesign-Proposal-Presentation-Round-3.jpg",
+                images: [
+                    "https://i.postimg.cc/xCr5dP2Y/25-SSCH-Shrodrick-Spikes-Signature-Homes-Logo-Redesign-Proposal-Presentation-Round-32.jpg",
+                    "https://i.postimg.cc/50cgtmVW/25-SSCH-Shrodrick-Spikes-Signature-Homes-Logo-Redesign-Proposal-Presentation-Round-33.jpg",
+                    "https://i.postimg.cc/cHqhJcSq/25-SSCH-Shrodrick-Spikes-Signature-Homes-Logo-Redesign-Proposal-Presentation-Round-34.jpg",
+                    "https://i.postimg.cc/pTNCdBHX/25-SSCH-Shrodrick-Spikes-Signature-Homes-Logo-Redesign-Proposal-Presentation-Round-35.jpg",
+                    "https://i.postimg.cc/sXFm2Jrf/25-SSCH-Shrodrick-Spikes-Signature-Homes-Logo-Redesign-Proposal-Presentation-Round-36.jpg",
+                    "https://i.postimg.cc/tJpz3CJk/25-SSCH-Shrodrick-Spikes-Signature-Homes-Logo-Redesign-Proposal-Presentation-Round-37.jpg",
+                    "https://i.postimg.cc/LXzTgZ9W/25-SSCH-Shrodrick-Spikes-Signature-Homes-Logo-Redesign-Proposal-Presentation-Round-38.jpg"
+                ] 
+            },
+            {
+                id: 'isi-memen',
+                title: "isi memen",
+                category: "event asset design",
+                description: "visual identity for a high-ticket mastermind experience.",
+                tags: ["print", "environmental", "social"],
+                context: "events live and die by their vibe. we created a cohesive visual system for isi memen's live event that translated seamlessly from large-format stage backdrops to intimate printed workbooks.",
+                heroImage: "https://i.postimg.cc/qRsFHvFV/isi_billboard.png",
+                images: [
+                    "https://i.postimg.cc/3NFBPZXN/Isi-fulfilled-flyer.jpg",
+                    "https://i.postimg.cc/nh04Kz2C/social-ex.png",
+                    "https://i.postimg.cc/xCxjgw7y/Isi-badge.png"
+                ]
+            },
+            {
+                id: 'inner-millionaire',
+                title: "inner millionaire",
+                category: "landing page",
+                description: "a digital sanctuary for high-performance mindset coaching.",
+                tags: ["web design", "ux/ui", "art direction"],
+                context: "for a brand focused on 'wealth consciousness', the digital experience needed to feel expansive, calm, and expensive. we utilized negative space and editorial typography.",
+                heroImage: "https://i.postimg.cc/VkMbkWZf/Inner-Millionaire-DS-Creative-Collective-Landingpage1.png",
+                images: [
+                    "https://i.postimg.cc/CxDfxsrS/Inner-Millionaire-DS-Creative-Collective-Landing-Page.png"
+                ]
+            },
+            {
+                id: 'donata-skinfood',
+                title: "donata skinfood",
+                category: "brand identity",
+                description: "realigning a heritage wellness brand for the modern luxury market.",
+                tags: ["branding", "packaging", "art direction"],
+                context: "donata had the product, but the visual language didn't match the price point. we refined the typography and color palette to create a system that feels earthy yet undeniably high-end.",
+                heroImage: "https://i.postimg.cc/T3bFJ0ct/donata-logo.gif",
+                // heroFit removed to restore full bleed
+                images: [
+                    "https://i.postimg.cc/XqSfVN9y/Donata-posters-ds-creative-Collective.png",
+                    "https://i.postimg.cc/nz1Wb7tx/donata-skinfood-ds-creative-collectve-unboxing.png",
+                    "https://i.postimg.cc/bwBm0mDZ/Donata-Product-Shoot.png", 
+                    [
+                        "https://i.postimg.cc/tgJLp1Pf/Donata-Pine-Tar-Soap-Lifestyle.webp",
+                        "https://i.postimg.cc/3wNPYypV/Donata-Hair-Mist-square.webp",
+                        "https://i.postimg.cc/5tQns889/Donata-web-body-oil-6.webp"
+                    ],
+                    "https://i.postimg.cc/t4YKHZF3/Donata-web-product-page.png"
+                ]
+            }
+        ];
 
         // --- COMPONENTS ---
 
         const Reveal = ({ children, delay = 0, className = "" }) => {
             const [isVisible, setIsVisible] = useState(false);
             const ref = useRef(null);
-
             useEffect(() => {
                 const observer = new IntersectionObserver(([entry]) => {
                     if (entry.isIntersecting) setIsVisible(true);
@@ -114,7 +168,6 @@
                 if (ref.current) observer.observe(ref.current);
                 return () => observer.disconnect();
             }, []);
-
             return (
                 <div ref={ref} 
                     className={`transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-24'} ${className}`}
@@ -125,11 +178,23 @@
             );
         };
 
-        const ParallaxImage = () => {
-             return (
-                 <div className="w-full h-full bg-neutral-200 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-cover opacity-80"></div>
-             )
-        }
+        const ParallaxImage = ({ src, label }) => (
+             <div className="w-full bg-neutral-200 relative group overflow-hidden aspect-[16/9] rounded-[2rem]">
+                <img 
+                    src={src} 
+                    alt={label}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out-expo group-hover:scale-[1.02]"
+                />
+                
+                {/* Dark Overlay for Text Contrast */}
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-500"></div>
+                
+                {/* Label on Hover */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <span className="text-4xl md:text-5xl font-bold text-white lowercase tracking-tighter">view case</span>
+                </div>
+             </div>
+        )
 
         const Preloader = ({ onComplete }) => {
             const [count, setCount] = useState(0);
@@ -143,10 +208,9 @@
                         }
                         return prev + 1;
                     });
-                }, 15);
+                }, 10);
                 return () => clearInterval(timer);
             }, []);
-
             return (
                 <div className="fixed inset-0 bg-black z-[200] flex flex-col justify-between p-6 md:p-12 text-white origin-top transition-transform duration-1000 ease-in-out">
                     <div className="text-xl font-bold tracking-tighter lowercase">dscc</div>
@@ -155,7 +219,6 @@
             );
         };
 
-        // Client Wordmark Component
         const ClientLogo = ({ name, tag }) => (
             <div className="flex flex-col opacity-40 hover:opacity-100 transition-opacity duration-300 cursor-default px-12">
                 <span className="text-2xl font-bold tracking-tighter uppercase whitespace-nowrap">{name}</span>
@@ -163,17 +226,93 @@
             </div>
         );
 
+        // --- PROJECT DETAIL (FULL BLEED EDITORIAL) ---
+        const ProjectDetail = ({ project, onBack }) => {
+            useEffect(() => { window.scrollTo(0, 0); }, []);
+
+            // Handle Logo GIFs vs Photos differently
+            const heroObjectFit = project.heroFit || 'cover'; // Default to cover (zoom)
+            
+            return (
+                <div className="min-h-screen bg-white animate-in slide-in-from-bottom-8 fade-in duration-700">
+                    <div className="noise-overlay"></div>
+                    
+                    {/* Navigation */}
+                    <div className="fixed top-0 left-0 w-full p-6 md:p-12 flex justify-between items-center z-50 mix-blend-difference text-white">
+                        <button onClick={onBack} className="text-lg font-bold lowercase hover:opacity-50 transition-opacity flex items-center gap-2">
+                            <ArrowLeft className="w-5 h-5" /> back
+                        </button>
+                        <div className="text-lg font-bold lowercase tracking-tighter">dscc</div>
+                    </div>
+
+                    {/* HERO */}
+                    <div className="h-[50vh] md:h-[80vh] w-full bg-neutral-900 relative">
+                        <img 
+                            src={project.heroImage} 
+                            alt={project.title}
+                            className={`absolute inset-0 w-full h-full object-${heroObjectFit}`}
+                        />
+                        <div className="absolute inset-0 bg-black/10"></div>
+                    </div>
+
+                    {/* CONTENT */}
+                    <div className="w-full bg-white relative z-10">
+                        {/* GALLERY - Full Width with Grid Support */}
+                        <div className="w-full max-w-[1920px] mx-auto py-0 space-y-0">
+                            {project.images.map((item, idx) => {
+                                // If it's an array, render a grid
+                                if (Array.isArray(item)) {
+                                    return (
+                                        <Reveal key={idx} delay={idx * 50}>
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 w-full">
+                                                {item.map((subImg, subIdx) => (
+                                                    <div key={subIdx} className="w-full aspect-square relative">
+                                                        <img 
+                                                            src={subImg} 
+                                                            alt={`Detail ${subIdx}`} 
+                                                            className="absolute inset-0 w-full h-full object-cover" 
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </Reveal>
+                                    );
+                                }
+                                // If it's a string, render full width
+                                return (
+                                    <Reveal key={idx} delay={idx * 50}>
+                                        <div className="w-full">
+                                            <img 
+                                                src={item} 
+                                                alt={`Visual ${idx}`} 
+                                                className="w-full h-auto block" 
+                                            />
+                                        </div>
+                                    </Reveal>
+                                );
+                            })}
+                        </div>
+
+                        <div className="w-full px-6 lg:px-12 py-24 text-center">
+                             <button onClick={onBack} className="text-2xl text-gray-400 hover:text-black transition-colors lowercase border-b border-transparent hover:border-black pb-1">
+                                close project
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- MAIN APP ---
         const App = () => {
             const [loading, setLoading] = useState(true);
+            const [activeProject, setActiveProject] = useState(null); 
             const [openFaq, setOpenFaq] = useState(null);
-            
-            // AI Brief State
             const [briefInput, setBriefInput] = useState('');
             const [briefResult, setBriefResult] = useState('');
             const [isGenerating, setIsGenerating] = useState(false);
-            
-            // Cursor Logic
             const cursorRef = useRef(null);
+            
             useEffect(() => {
                 const moveCursor = (e) => {
                     if(cursorRef.current) {
@@ -187,11 +326,10 @@
 
             const toggleFaq = (idx) => setOpenFaq(openFaq === idx ? null : idx);
 
-            // Mock AI Generation for Prototype
             const generateBrief = () => {
                 setIsGenerating(true);
                 setTimeout(() => {
-                    setBriefResult(`1. PROJECT GOAL: Establish visual dominance in the fintech sector.\n\n2. VISUAL DIRECTION: Swiss Minimalist, High-Trust, Editorial.\n\n3. DELIVERABLES:\n- Pitch Deck Template (Master)\n- Social Visual System\n- One-Pager for Investors\n\n4. STRATEGIC NOTE: The aesthetic needs to signal institutional grade stability while maintaining startup velocity.`);
+                    setBriefResult(`1. PROJECT GOAL: Series A Fundraising Deck ($15M Target)\n\n2. VISUAL DIRECTION: Institutional, Clean, Data-Forward.\n\n3. DELIVERABLES:\n- 15-Slide Master Deck\n- Financial Data Visualization\n- Executive Summary One-Pager\n\n4. STRATEGIC NOTE: The narrative needs to pivot from "cool tech" to "predictable revenue engine."`);
                     setIsGenerating(false);
                 }, 2000);
             };
@@ -205,6 +343,15 @@
 
             if (loading) return <Preloader onComplete={() => setLoading(false)} />;
 
+            if (activeProject) {
+                return (
+                    <div>
+                        <div ref={cursorRef} className="custom-cursor hidden md:block"></div>
+                        <ProjectDetail project={activeProject} onBack={() => setActiveProject(null)} />
+                    </div>
+                );
+            }
+
             return (
                 <div className="animate-in fade-in duration-1000">
                     <div ref={cursorRef} className="custom-cursor hidden md:block"></div>
@@ -216,7 +363,6 @@
                             <Reveal><div className="text-xl font-bold tracking-tighter lowercase">dscc</div></Reveal>
                             <Reveal delay={100}><button className="text-sm font-medium hover:opacity-50 transition-opacity lowercase">login</button></Reveal>
                         </div>
-
                         <div className="flex flex-col gap-8 z-10">
                             <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.85] lowercase">
                                 <Reveal delay={200}>your brand.</Reveal>
@@ -224,31 +370,25 @@
                             </h1>
                             <Reveal delay={500}>
                                 <p className="max-w-xl text-xl md:text-2xl leading-relaxed text-gray-600 lowercase">
-                                    creative direction and senior execution for founders who need clarity, consistency, and visual stewardship.
+                                    creative direction and senior execution for founders who need investor-grade narratives, clarity, and visual stewardship.
                                 </p>
                             </Reveal>
                         </div>
-
                         <div className="flex flex-col md:flex-row gap-4 mt-12 md:mt-24">
                             <Reveal delay={700}>
-                                <button className="bg-black text-white px-8 py-5 text-xl font-medium rounded-full hover:scale-105 transition-transform duration-300 lowercase w-full md:w-auto">
-                                    subscribe now
-                                </button>
+                                <button className="bg-black text-white px-8 py-5 text-xl font-medium rounded-full hover:scale-105 transition-transform duration-300 lowercase w-full md:w-auto">subscribe now</button>
                             </Reveal>
                             <Reveal delay={800}>
-                                <button className="bg-white text-black border border-black px-8 py-5 text-xl font-medium rounded-full hover:bg-black hover:text-white hover:scale-105 transition-all duration-300 lowercase w-full md:w-auto">
-                                    book a call
-                                </button>
+                                <button className="bg-white text-black border border-black px-8 py-5 text-xl font-medium rounded-full hover:bg-black hover:text-white hover:scale-105 transition-all duration-300 lowercase w-full md:w-auto">book a call</button>
                             </Reveal>
                         </div>
                     </header>
 
-                    {/* CLIENTS MARQUEE (UPDATED) */}
+                    {/* CLIENTS */}
                     <section className="border-t border-b border-gray-200 py-12 overflow-hidden bg-white">
                         <div className="max-w-screen-2xl mx-auto px-6 mb-8">
                             <Reveal><span className="text-sm font-bold tracking-widest text-gray-400 lowercase">trusted by</span></Reveal>
                         </div>
-                        
                         <div className="animate-marquee flex gap-12 whitespace-nowrap mb-8 items-center">
                              {[...Array(4)].map((_, i) => (
                                 <React.Fragment key={i}>
@@ -265,47 +405,57 @@
 
                     {/* POSITIONING */}
                     <section className="bg-black text-white py-32 md:py-48 px-6 lg:px-12 relative overflow-hidden">
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 blur-[120px] rounded-full pointer-events-none"></div>
                         <div className="max-w-5xl mx-auto text-center space-y-16 relative z-10">
                             <Reveal>
                                 <h2 className="text-4xl md:text-7xl font-medium tracking-tight leading-tight lowercase">
                                     you don’t need another freelancer.
                                     <span className="block text-white/40 mt-4">you need a creative department.</span>
-                                </h2>
+                                </h2 >
                             </Reveal>
                             <Reveal delay={200}><div className="w-px h-32 bg-white/20 mx-auto"></div></Reveal>
                             <Reveal delay={400}>
                                 <p className="text-xl md:text-2xl text-white/60 max-w-2xl mx-auto lowercase leading-relaxed">
-                                    guided by creative directors. executed by specialists. we provide the oversight of an agency with the velocity of a subscription.
+                                    guided by creative directors. executed by specialists. we combine high-stakes presentation design with institutional-grade brand systems.
                                 </p>
                             </Reveal>
                         </div>
+                        <div className="animate-marquee flex gap-16 whitespace-nowrap opacity-30 mt-32">
+                             {[...Array(10)].map((_, i) => (
+                                <div key={i} className="flex items-center gap-16 text-sm font-bold tracking-widest uppercase">
+                                    <span>investor decks</span><span>•</span>
+                                    <span>sales narratives</span><span>•</span>
+                                    <span>visual systems</span><span>•</span>
+                                </div>
+                            ))}
+                        </div>
                     </section>
 
-                    {/* WORK SCROLLER */}
+                    {/* SELECTED WORK (UPDATED MOBILE LAYOUT) */}
                     <section className="py-32 bg-white overflow-hidden">
                         <div className="px-6 lg:px-12 mb-12 flex justify-between items-end max-w-screen-2xl mx-auto">
                             <Reveal><h2 className="text-5xl md:text-7xl font-bold tracking-tighter lowercase max-w-2xl">selected work.</h2></Reveal>
                             <Icon name="arrow-right" className="w-8 h-8 opacity-20 hidden md:block" />
                         </div>
-                        <div className="flex overflow-x-auto gap-8 px-6 lg:px-12 pb-20 snap-x snap-mandatory no-scrollbar">
-                            {[1, 2, 3].map((item, index) => (
-                                <div key={index} className="min-w-[85vw] md:min-w-[50vw] snap-center shrink-0">
+                        
+                        {/* MOBILE: Flex-Col (Stack) + w-full
+                            DESKTOP: Flex-Row (Scroll) + min-w-[50vw]
+                        */}
+                        <div className="flex flex-col md:flex-row md:overflow-x-auto gap-8 px-6 lg:px-12 pb-20 md:snap-x md:snap-mandatory no-scrollbar">
+                            {projectsData.map((project, index) => (
+                                <div key={project.id} className="w-full md:min-w-[50vw] md:snap-center shrink-0" onClick={() => setActiveProject(project)}>
                                     <Reveal delay={index * 100}>
                                         <div className="group cursor-none">
-                                            <div className="aspect-[16/10] bg-gray-100 mb-8 rounded-[2rem] overflow-hidden relative group-hover:scale-[0.98] transition-transform duration-700">
-                                                <ParallaxImage />
-                                                <div className="absolute inset-0 flex items-center justify-center">
-                                                     <span className="text-4xl font-bold text-gray-400 lowercase opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">view case</span>
-                                                </div>
+                                            <ParallaxImage src={project.heroImage} label={project.title} />
+                                            <div className="mt-6">
+                                                <h3 className="text-3xl font-bold mb-2 lowercase">{project.title}</h3>
+                                                <p className="text-gray-500 text-lg lowercase">{project.description}</p>
                                             </div>
-                                            <h3 className="text-3xl font-bold mb-2 lowercase">{index === 0 ? "pitch deck overhaul" : index === 1 ? "global campaign" : "brand system"}</h3>
-                                            <p className="text-gray-500 text-lg lowercase">{index === 0 ? "series b funding secured." : index === 1 ? "visual unification." : "identity management."}</p>
                                         </div>
                                     </Reveal>
                                 </div>
                             ))}
-                            <div className="min-w-[5vw] shrink-0"></div>
+                            {/* Spacer only needed on Desktop */}
+                            <div className="hidden md:block min-w-[5vw] shrink-0"></div>
                         </div>
                     </section>
                     
@@ -318,10 +468,9 @@
                                 </div>
                             </div>
                             <div className="md:w-2/3 space-y-8">
-                                {[
-                                    { step: "01", title: "request", desc: "submit your brief via our portal. no unnecessary meetings." },
-                                    { step: "02", title: "direction", desc: "our creative directors review the brief and set the visual strategy." },
-                                    { step: "03", title: "execution", desc: "work is crafted, reviewed, and delivered within 48 hours." }
+                                {[{ step: "01", title: "request", desc: "submit your brief via our portal. upload your rough slides, loom videos, or raw notes." },
+                                  { step: "02", title: "direction", desc: "our creative directors structure the narrative and set the visual strategy." },
+                                  { step: "03", title: "execution", desc: "work is crafted, reviewed, and delivered within 48 hours." }
                                 ].map((item, idx) => (
                                     <Reveal key={idx} className="bg-neutral-900/50 p-12 rounded-[3rem] border border-white/10 hover:border-white/30 transition-colors duration-500">
                                         <span className="text-sm font-bold text-gray-500 border border-gray-700 rounded-full px-4 py-2 mb-8 inline-block lowercase">step {item.step}</span>
@@ -333,46 +482,27 @@
                         </div>
                     </section>
 
-                    {/* BRIEF ARCHITECT (AI Section) */}
+                    {/* BRIEF ARCHITECT */}
                     <section className="py-32 px-6 lg:px-12 bg-gray-50">
                       <div className="max-w-screen-2xl mx-auto">
                          <div className="bg-white p-8 md:p-16 rounded-[3rem] shadow-2xl overflow-hidden relative">
                             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-50 to-transparent rounded-full blur-3xl pointer-events-none opacity-50"></div>
-                            
                             <div className="relative z-10 flex flex-col md:flex-row gap-16">
                               <div className="md:w-1/2">
-                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black text-white text-xs font-bold lowercase mb-8">
-                                  <Sparkles className="w-3 h-3" />
-                                  gemini powered
-                                </div>
+                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black text-white text-xs font-bold lowercase mb-8"><Sparkles className="w-3 h-3" /> gemini powered</div>
                                 <h2 className="text-4xl md:text-6xl font-bold tracking-tighter lowercase mb-6">brief architect.</h2>
                                 <p className="text-xl text-gray-500 lowercase">turn messy thoughts into strategy-led briefs.</p>
                               </div>
-
                               <div className="md:w-1/2 w-full">
                                 {!briefResult ? (
                                   <div className="space-y-6">
-                                    <textarea 
-                                      value={briefInput}
-                                      onChange={(e) => setBriefInput(e.target.value)}
-                                      placeholder="e.g. i need a pitch deck for a fintech startup..."
-                                      className="w-full bg-gray-50 border-0 rounded-3xl p-8 text-lg lowercase resize-none focus:ring-2 focus:ring-black/5 transition-all min-h-[200px]"
-                                    />
-                                    <button 
-                                      onClick={generateBrief}
-                                      disabled={isGenerating || !briefInput.trim()}
-                                      className="w-full bg-black text-white py-4 rounded-2xl font-bold hover:scale-[1.02] active:scale-[0.98] transition-transform duration-300 ease-out-expo flex items-center justify-center gap-2 lowercase"
-                                    >
-                                      {isGenerating ? <Loader2 className="animate-spin" /> : 'generate brief'}
-                                    </button>
+                                    <textarea value={briefInput} onChange={(e) => setBriefInput(e.target.value)} placeholder="e.g. i need a pitch deck for a fintech startup..." className="w-full bg-gray-50 border-0 rounded-3xl p-8 text-lg lowercase resize-none focus:ring-2 focus:ring-black/5 transition-all min-h-[200px]" />
+                                    <button onClick={generateBrief} disabled={isGenerating || !briefInput.trim()} className="w-full bg-black text-white py-4 rounded-2xl font-bold hover:scale-[1.02] active:scale-[0.98] transition-transform duration-300 ease-out-expo flex items-center justify-center gap-2 lowercase">{isGenerating ? <Loader2 className="animate-spin" /> : 'generate brief'}</button>
                                   </div>
                                 ) : (
                                   <div className="bg-black text-white p-8 rounded-3xl animate-in slide-in-from-bottom-10 fade-in duration-700">
                                     <pre className="whitespace-pre-wrap font-sans text-lg text-gray-300 mb-8">{briefResult}</pre>
-                                    <div className="flex justify-between">
-                                      <button onClick={() => setBriefResult('')} className="text-sm text-gray-500 hover:text-white lowercase">reset</button>
-                                      <button onClick={copyToClipboard} className="text-sm flex items-center gap-2 hover:text-gray-300 lowercase"><Copy className="w-4 h-4" /> copy</button>
-                                    </div>
+                                    <div className="flex justify-between"><button onClick={() => setBriefResult('')} className="text-sm text-gray-500 hover:text-white lowercase">reset</button><button onClick={copyToClipboard} className="text-sm flex items-center gap-2 hover:text-gray-300 lowercase"><Copy className="w-4 h-4" /> copy</button></div>
                                   </div>
                                 )}
                               </div>
@@ -381,76 +511,46 @@
                       </div>
                     </section>
 
-                    {/* SCOPE OF WORK */}
+                    {/* SCOPE & PRICING */}
                     <section className="py-32 px-6 lg:px-12 bg-white">
                         <div className="max-w-screen-2xl mx-auto">
                             <Reveal><h2 className="text-5xl md:text-7xl font-bold tracking-tighter lowercase mb-20">scope of work.</h2></Reveal>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32 mb-32">
                                 <div>
                                     <Reveal><h3 className="text-2xl font-bold mb-8 lowercase flex items-center gap-3"><span className="w-3 h-3 bg-black rounded-full"></span> what we do</h3></Reveal>
-                                    <div className="space-y-4">
-                                        {['pitch decks', 'brand identity systems', 'social visual assets', 'landing page ui', 'marketing one-pagers', 'email design', 'packaging concepts', 'basic motion graphics'].map((item, i) => (
-                                            <Reveal key={i} delay={i * 50}>
-                                                <div className="text-xl text-gray-600 border-b border-gray-100 py-4 lowercase flex justify-between items-center group cursor-default">
-                                                    <span>{item}</span>
-                                                    <Check className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-black" />
-                                                </div>
-                                            </Reveal>
-                                        ))}
-                                    </div>
+                                    <div className="space-y-4">{['investor pitch decks', 'sales narratives', 'board meeting materials', 'brand identity systems', 'social visual assets', 'landing page ui'].map((item, i) => (<Reveal key={i} delay={i * 50}><div className="text-xl text-gray-600 border-b border-gray-100 py-4 lowercase flex justify-between items-center group cursor-default"><span>{item}</span><Check className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-black" /></div></Reveal>))}</div>
                                 </div>
                                 <div>
                                     <Reveal><h3 className="text-2xl font-bold mb-8 lowercase text-gray-400 flex items-center gap-3"><span className="w-3 h-3 border border-gray-300 rounded-full"></span> what we don't</h3></Reveal>
-                                    <div className="space-y-4">
-                                         {['3d character modeling', 'complex web development', 'video shooting/production', 'long-form copywriting', 'custom illustration', 'document translation'].map((item, i) => (
-                                            <Reveal key={i} delay={i * 50}>
-                                                <div className="text-xl text-gray-300 border-b border-gray-50 py-4 lowercase">{item}</div>
-                                            </Reveal>
-                                        ))}
-                                    </div>
+                                    <div className="space-y-4">{['3d character modeling', 'complex web development', 'video shooting/production', 'long-form copywriting'].map((item, i) => (<Reveal key={i} delay={i * 50}><div className="text-xl text-gray-300 border-b border-gray-50 py-4 lowercase">{item}</div></Reveal>))}</div>
+                                </div>
+                            </div>
+                            
+                            <div className="border-t border-gray-100 pt-32 text-center">
+                                <Reveal><h2 className="text-5xl md:text-7xl font-bold tracking-tighter lowercase mb-8">simple pricing.</h2></Reveal>
+                                <Reveal delay={200}><p className="text-2xl text-gray-500 lowercase">$5,000 / month. pause anytime.</p></Reveal>
+                                
+                                <div className="max-w-3xl mx-auto space-y-4 mt-24 text-left">
+                                    {[
+                                    { q: "why not a full-time hire?", a: "a senior designer is one person. dscc is a system. you get creative director oversight and a team of specialists for less than the cost of one employee." },
+                                    { q: "who does the work?", a: "our vetted execution team, guided by creative directors who ensure strategy and brand consistency." },
+                                    { q: "is it really unlimited?", a: "yes. add as many requests to your queue as you want. we knock them out one by one." },
+                                    { q: "contracts?", a: "monthly. pause or cancel anytime you want." }
+                                    ].map((item, idx) => (
+                                        <Reveal key={idx} delay={idx * 100}>
+                                            <div onClick={() => toggleFaq(idx)} className="group bg-gray-50 hover:bg-black hover:text-white p-8 rounded-3xl cursor-none transition-colors duration-500 cursor-pointer">
+                                                <div className="flex justify-between items-center"><h3 className="text-2xl font-bold lowercase">{item.q}</h3><Icon name={openFaq === idx ? "minus" : "plus"} className="w-6 h-6" /></div>
+                                                <div className={`overflow-hidden transition-all duration-500 ${openFaq === idx ? 'max-h-40 mt-4 opacity-100' : 'max-h-0 opacity-0'}`}><p className="text-lg opacity-80 lowercase">{item.a}</p></div>
+                                            </div>
+                                        </Reveal>
+                                    ))}
                                 </div>
                             </div>
                         </div>
                     </section>
 
-                    {/* PRICING & FAQ (UPDATED $5k) */}
-                    <section className="py-32 px-6 lg:px-12 bg-white border-t border-gray-100">
-                        <div className="max-w-4xl mx-auto text-center mb-24">
-                            <Reveal><h2 className="text-5xl md:text-7xl font-bold tracking-tighter lowercase mb-8">simple pricing.</h2></Reveal>
-                            <Reveal delay={200}><p className="text-2xl text-gray-500 lowercase">$5,000 / month. pause anytime.</p></Reveal>
-                        </div>
-                        <div className="max-w-3xl mx-auto space-y-4">
-                            {[
-                            { q: "why not a full-time hire?", a: "a senior designer is one person. dscc is a system. you get creative director oversight and a team of specialists for less than the cost of one employee." },
-                            { q: "who does the work?", a: "our vetted execution team, guided by creative directors who ensure strategy and brand consistency." },
-                            { q: "is it really unlimited?", a: "yes. add as many requests to your queue as you want. we knock them out one by one." },
-                            { q: "turnaround time?", a: "48 hours on average for standard requests." },
-                            { q: "contracts?", a: "monthly. pause or cancel anytime you want." },
-                            { q: "communication?", a: "slack + trello. async and efficient." },
-                            { q: "meetings?", a: "only if absolutely necessary. we prefer designing." }
-                            ].map((item, idx) => (
-                                <Reveal key={idx} delay={idx * 100}>
-                                    <div onClick={() => toggleFaq(idx)} className="group bg-gray-50 hover:bg-black hover:text-white p-8 rounded-3xl cursor-none transition-colors duration-500 cursor-pointer">
-                                        <div className="flex justify-between items-center">
-                                            <h3 className="text-2xl font-bold lowercase">{item.q}</h3>
-                                            <Icon name={openFaq === idx ? "minus" : "plus"} className="w-6 h-6" />
-                                        </div>
-                                        <div className={`overflow-hidden transition-all duration-500 ${openFaq === idx ? 'max-h-40 mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                            <p className="text-lg opacity-80 lowercase">{item.a}</p>
-                                        </div>
-                                    </div>
-                                </Reveal>
-                            ))}
-                        </div>
-                    </section>
-
                     <footer className="bg-black text-white py-24 px-6 text-center">
                         <h2 className="text-[15vw] font-bold tracking-tighter leading-none opacity-20 select-none">dscc</h2>
-                        <div className="mt-12 flex justify-center gap-8 text-sm text-gray-500 lowercase">
-                            <a href="#" className="hover:text-white">twitter</a>
-                            <a href="#" className="hover:text-white">instagram</a>
-                        </div>
                     </footer>
                 </div>
             );
