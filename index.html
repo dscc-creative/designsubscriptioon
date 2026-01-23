@@ -35,7 +35,7 @@
                     },
                     animation: {
                         'marquee': 'marquee 40s linear infinite',
-                        'marquee-fast': 'marquee 10s linear infinite',
+                        'marquee-fast': 'marquee 8s linear infinite', // 5x Faster for Mobile
                     },
                     keyframes: {
                         marquee: {
@@ -61,6 +61,8 @@
             background: white; border-radius: 50%; mix-blend-mode: difference;
             transform: translate(-50%, -50%); z-index: 9999; transition: transform 0.1s ease-out;
         }
+
+        /* NOISE OVERLAY REMOVED COMPLETELY */
     </style>
 </head>
 <body class="bg-white text-black selection:bg-black selection:text-white">
@@ -76,6 +78,7 @@
             return <i data-lucide={name} className={className}></i>;
         };
         
+        // Define specific icons
         const Sparkles = ({ className }) => <Icon name="sparkles" className={className} />;
         const Copy = ({ className }) => <Icon name="copy" className={className} />;
         const Loader2 = ({ className }) => <Icon name="loader-2" className={className} />;
@@ -141,6 +144,7 @@
                 tags: ["branding", "packaging", "art direction"],
                 context: "donata had the product, but the visual language didn't match the price point. we refined the typography and color palette to create a system that feels earthy yet undeniably high-end.",
                 heroImage: "https://i.postimg.cc/T3bFJ0ct/donata-logo.gif",
+                // Removed heroFit: "contain" -> This reverts to Full Bleed (Cover)
                 images: [
                     "https://i.postimg.cc/XqSfVN9y/Donata-posters-ds-creative-Collective.png",
                     "https://i.postimg.cc/nz1Wb7tx/donata-skinfood-ds-creative-collectve-unboxing.png",
@@ -184,7 +188,11 @@
                     alt={label}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out-expo group-hover:scale-[1.02]"
                 />
+                
+                {/* Dark Overlay for Text Contrast */}
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-500"></div>
+                
+                {/* Label on Hover */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     <span className="text-4xl md:text-5xl font-bold text-white lowercase tracking-tighter">view case</span>
                 </div>
@@ -233,17 +241,25 @@
             };
 
             const handleCheckout = () => {
+                // ACTUAL STRIPE LINKS
                 const stripeLinks = {
                     monthly: "https://buy.stripe.com/3cIdRabgB6Ec0sifWg9IQ01",
                     quarterly: "https://buy.stripe.com/cNi8wQ5Wh7Igdf425q9IQ02",
                     annual: "https://buy.stripe.com/3cIbJ25Wh8Mk2AqdO89IQ03"
                 };
+
                 const link = stripeLinks[selectedTier];
-                if(link) window.open(link, '_blank');
+                
+                // IMPORTANT: Use window.open with _blank to break out of iframe
+                if(link) {
+                    window.open(link, '_blank');
+                } else {
+                    alert("Checkout link unavailable.");
+                }
             };
 
             return ReactDOM.createPortal(
-                <div className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm flex items-center justify-center p-6 animate-in fade-in duration-300">
+                <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-6 animate-in fade-in duration-300">
                     <div className="bg-white text-black w-full max-w-lg rounded-3xl overflow-hidden relative">
                         <button onClick={onClose} className="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition-colors"><X className="w-6 h-6" /></button>
                         
@@ -296,34 +312,53 @@
         // --- CLIENT PORTAL MOCKUP (VISUALIZATION) ---
         const PortalModal = ({ onClose }) => {
             return ReactDOM.createPortal(
-                <div className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex items-center justify-center p-6 animate-in fade-in duration-300">
+                <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-6 animate-in fade-in duration-300">
                     <div className="bg-white text-black w-full max-w-4xl h-[80vh] rounded-3xl overflow-hidden relative flex flex-col">
+                        
+                        {/* Sidebar */}
                         <div className="flex h-full">
                             <div className="w-64 bg-gray-50 p-8 border-r border-gray-100 hidden md:flex flex-col justify-between">
                                 <div>
                                     <div className="text-xl font-bold tracking-tighter lowercase mb-12">ds creative design</div>
                                     <div className="space-y-4">
-                                        <div className="flex items-center gap-3 text-sm font-bold bg-black text-white px-4 py-2 rounded-lg cursor-pointer"><List className="w-4 h-4" /> dashboard</div>
-                                        <div className="flex items-center gap-3 text-sm text-gray-500 px-4 py-2 cursor-pointer hover:text-black"><Sparkles className="w-4 h-4" /> active tasks</div>
-                                        <div className="flex items-center gap-3 text-sm text-gray-500 px-4 py-2 cursor-pointer hover:text-black"><FileText className="w-4 h-4" /> assets</div>
+                                        <div className="flex items-center gap-3 text-sm font-bold bg-black text-white px-4 py-2 rounded-lg cursor-pointer">
+                                            <List className="w-4 h-4" /> dashboard
+                                        </div>
+                                        <div className="flex items-center gap-3 text-sm text-gray-500 px-4 py-2 cursor-pointer hover:text-black">
+                                            <Sparkles className="w-4 h-4" /> active tasks
+                                        </div>
+                                        <div className="flex items-center gap-3 text-sm text-gray-500 px-4 py-2 cursor-pointer hover:text-black">
+                                            <FileText className="w-4 h-4" /> assets
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="text-xs text-gray-400">client: signature homes</div>
                             </div>
+                            
+                            {/* Main Content */}
                             <div className="flex-1 p-8 md:p-12 overflow-y-auto">
                                 <div className="flex justify-between items-center mb-12">
                                     <h2 className="text-4xl font-bold lowercase tracking-tighter">onboarding</h2>
                                     <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full"><X className="w-6 h-6" /></button>
                                 </div>
+                                
                                 <p className="text-xl text-gray-500 mb-12 max-w-lg lowercase">welcome to the membership. to get started, please upload your brand files and record a quick video brief.</p>
+
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    {/* Upload Box */}
                                     <div className="border-2 border-dashed border-gray-200 rounded-2xl p-8 flex flex-col items-center justify-center text-center hover:border-black transition-colors cursor-pointer group h-64">
-                                        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"><Upload className="w-6 h-6 text-gray-400 group-hover:text-black" /></div>
+                                        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                            <Upload className="w-6 h-6 text-gray-400 group-hover:text-black" />
+                                        </div>
                                         <h3 className="font-bold lowercase text-lg">upload brand assets</h3>
                                         <p className="text-sm text-gray-400 mt-2 lowercase">logos, fonts, guidelines (AI, PDF)</p>
                                     </div>
+
+                                    {/* Loom Box */}
                                     <div className="bg-black text-white rounded-2xl p-8 flex flex-col justify-between h-64 hover:scale-[1.02] transition-transform cursor-pointer">
-                                        <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center"><Video className="w-6 h-6 text-white" /></div>
+                                        <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                                            <Video className="w-6 h-6 text-white" />
+                                        </div>
                                         <div>
                                             <h3 className="font-bold lowercase text-2xl mb-2">record video brief</h3>
                                             <p className="text-sm text-gray-400 lowercase">skip the meeting. tell us what you need via loom.</p>
@@ -345,16 +380,24 @@
             
             return (
                 <div className="min-h-screen bg-white animate-in slide-in-from-bottom-8 fade-in duration-700">
+                    <div className="noise-overlay hidden"></div>
+                    
                     <div className="fixed top-0 left-0 w-full p-6 md:p-12 flex justify-between items-center z-50 mix-blend-difference text-white">
                         <button onClick={onBack} className="text-lg font-bold lowercase hover:opacity-50 transition-opacity flex items-center gap-2">
                             <ArrowLeft className="w-5 h-5" /> back
                         </button>
                         <div className="text-lg font-bold lowercase tracking-tighter">ds creative design</div>
                     </div>
+
                     <div className="h-[50vh] md:h-[80vh] w-full bg-neutral-900 relative">
-                        <img src={project.heroImage} alt={project.title} className={`absolute inset-0 w-full h-full object-${heroObjectFit}`} />
+                        <img 
+                            src={project.heroImage} 
+                            alt={project.title}
+                            className={`absolute inset-0 w-full h-full object-${heroObjectFit}`}
+                        />
                         <div className="absolute inset-0 bg-black/10"></div>
                     </div>
+
                     <div className="w-full bg-white relative z-10">
                         <div className="w-full max-w-[1920px] mx-auto py-0 space-y-0">
                             {project.images.map((item, idx) => {
@@ -461,6 +504,7 @@
             return (
                 <div className="animate-in fade-in duration-1000">
                     <div ref={cursorRef} className="custom-cursor hidden md:block"></div>
+                    <div className="noise-overlay hidden"></div>
                     
                     {/* MODALS */}
                     {showCheckout && <CheckoutModal onClose={() => setShowCheckout(false)} />}
@@ -472,9 +516,17 @@
                             <Reveal><div className="text-xl font-bold tracking-tighter lowercase">ds creative design</div></Reveal>
                             
                             <div className="flex items-center gap-6">
+                                {/* BACK TO HOME LINK */}
                                 <Reveal delay={50}>
-                                    <a href="https://www.dscreativecollective.com/" target="_top" className="text-sm font-medium hover:opacity-50 transition-opacity lowercase">back to home</a>
+                                    <a 
+                                        href="https://www.dscreativecollective.com/" 
+                                        target="_top" 
+                                        className="text-sm font-medium hover:opacity-50 transition-opacity lowercase"
+                                    >
+                                        back to home
+                                    </a>
                                 </Reveal>
+                                
                                 <Reveal delay={100}>
                                     <button onClick={() => setShowPortal(true)} className="text-sm font-medium hover:opacity-50 transition-opacity lowercase">login</button>
                                 </Reveal>
@@ -482,6 +534,7 @@
                         </div>
                         
                         <div className="flex flex-col gap-8 z-10 max-w-6xl mx-auto mt-20">
+                            {/* UPDATED TYPOGRAPHY: Massive Scale (16vw) and tight leading */}
                             <h1 className="text-[12vw] md:text-[16vw] font-bold tracking-tighter leading-[0.65] lowercase">
                                 <Reveal delay={200}><div className="block">your brand.</div></Reveal>
                                 <Reveal delay={350}><div className="block italic">executed.</div></Reveal>
@@ -497,23 +550,30 @@
                                 <button onClick={() => setShowCheckout(true)} className="bg-black text-white px-12 py-6 text-xl font-medium rounded-full hover:scale-105 transition-transform duration-300 lowercase w-full md:w-auto">start your membership</button>
                             </Reveal>
                         </div>
+
+                         {/* HERO TESTIMONIAL - MOVED HERE */}
+                        <Reveal delay={800}>
+                            <div className="mt-16 max-w-lg mx-auto text-center space-y-4 opacity-60 hover:opacity-100 transition-opacity duration-500 cursor-default">
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Trusted by founders who value consistency</p>
+                                <p className="text-sm text-gray-500 leading-relaxed font-sans">
+                                    “we’ve worked with ds creative collective for four years and have seen clear growth in both our brand and overall reputation.”
+                                </p>
+                                <p className="text-xs font-bold text-gray-900 lowercase">— portia m.</p>
+                            </div>
+                        </Reveal>
                     </header>
 
-                    {/* CLIENTS */}
-                    <section className="border-t border-b border-gray-200 py-12 overflow-hidden bg-white">
-                        <div className="max-w-screen-2xl mx-auto px-6 mb-8">
+                    {/* CLIENTS - STATIC GRID (GRAYSCALE) */}
+                    <section className="border-t border-b border-gray-200 py-16 bg-white">
+                        <div className="max-w-screen-2xl mx-auto px-6 mb-12 text-center">
                             <Reveal><span className="text-sm font-bold tracking-widest text-gray-400 lowercase">trusted by</span></Reveal>
                         </div>
-                        <div className="animate-marquee-fast md:animate-marquee flex gap-12 whitespace-nowrap mb-8 items-center">
-                             {[...Array(4)].map((_, i) => (
-                                <React.Fragment key={i}>
-                                    <ClientLogo src="https://i.postimg.cc/nzrMYM4f/barbella_logo_secondary_26.png" alt="Barbella Co" className="w-48" />
-                                    <ClientLogo src="https://i.postimg.cc/66S4cVbv/official_IM_Stacked_Logo_black.png" alt="Inner Millionaire" className="w-32" /> {/* Stacked logo needs less width to not be huge */}
-                                    <ClientLogo src="https://i.postimg.cc/fWFSC7qt/donata_logos_24.png" alt="Donata" className="w-48" />
-                                    <ClientLogo src="https://i.postimg.cc/fTtmQqSr/Quiet_Wealth_Society_Logo_Exploration.png" alt="Quiet Wealth" className="w-32" /> {/* Stacked logo needs less width */}
-                                    <ClientLogo src="https://i.postimg.cc/RV6KxpJb/hoop_mobb_primary_logo_black.png" alt="Hoop Mobb" className="w-48" />
-                                </React.Fragment>
-                            ))}
+                        <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 px-6">
+                             <ClientLogo src="https://i.postimg.cc/nzrMYM4f/barbella_logo_secondary_26.png" alt="Barbella Co" className="w-48" />
+                             <ClientLogo src="https://i.postimg.cc/66S4cVbv/official_IM_Stacked_Logo_black.png" alt="Inner Millionaire" className="w-32" />
+                             <ClientLogo src="https://i.postimg.cc/fWFSC7qt/donata_logos_24.png" alt="Donata" className="w-48" />
+                             <ClientLogo src="https://i.postimg.cc/fTtmQqSr/Quiet_Wealth_Society_Logo_Exploration.png" alt="Quiet Wealth" className="w-32" />
+                             <ClientLogo src="https://i.postimg.cc/RV6KxpJb/hoop_mobb_primary_logo_black.png" alt="Hoop Mobb" className="w-48" />
                         </div>
                     </section>
 
@@ -568,6 +628,7 @@
                             <div className="hidden md:block min-w-[5vw] shrink-0"></div>
                         </div>
 
+                        {/* NEW CTA UNDER SELECTED WORK */}
                         <div className="flex justify-center mt-8">
                             <Reveal>
                                 <button onClick={() => setShowCheckout(true)} className="bg-black text-white px-8 py-4 text-lg font-medium rounded-full hover:scale-105 transition-transform duration-300 lowercase">start your membership</button>
@@ -626,74 +687,134 @@
                          </div>
                       </div>
                     </section>
-
+                    
                     {/* SCOPE & PRICING */}
                     <section className="py-32 px-6 lg:px-12 bg-white">
                         <div className="max-w-screen-2xl mx-auto">
                             <Reveal><h2 className="text-5xl md:text-7xl font-bold tracking-tighter lowercase mb-20">scope of work.</h2></Reveal>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32 mb-32">
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32">
                                 <div>
                                     <Reveal><h3 className="text-2xl font-bold mb-8 lowercase flex items-center gap-3"><span className="w-3 h-3 bg-black rounded-full"></span> what we do</h3></Reveal>
-                                    <div className="space-y-4">{['brand identity systems', 'strategic presentation design', 'web & digital ui', 'social visual direction', 'marketing collateral', 'investor & sales narratives'].map((item, i) => (<Reveal key={i} delay={i * 50}><div className="text-xl text-gray-600 border-b border-gray-100 py-4 lowercase flex justify-between items-center group cursor-default"><span>{item}</span><Check className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-black" /></div></Reveal>))}</div>
+                                    <div className="space-y-4">
+                                        {['brand identity systems', 'strategic presentation design', 'web & digital ui', 'social visual direction', 'marketing collateral'].map((item, i) => (
+                                            <Reveal key={i} delay={i * 50}>
+                                                <div className="text-xl text-gray-600 border-b border-gray-100 py-4 lowercase flex justify-between items-center group cursor-default">
+                                                    <span>{item}</span>
+                                                    <Check className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-black" />
+                                                </div>
+                                            </Reveal>
+                                        ))}
+                                    </div>
                                 </div>
                                 <div>
                                     <Reveal><h3 className="text-2xl font-bold mb-8 lowercase text-gray-400 flex items-center gap-3"><span className="w-3 h-3 border border-gray-300 rounded-full"></span> what we don't</h3></Reveal>
-                                    <div className="space-y-4">{['3d character modeling', 'complex web development', 'video shooting/production', 'long-form copywriting'].map((item, i) => (<Reveal key={i} delay={i * 50}><div className="text-xl text-gray-300 border-b border-gray-50 py-4 lowercase">{item}</div></Reveal>))}</div>
-                                </div>
-                            </div>
-                            
-                            <div className="border-t border-gray-100 pt-32 text-center">
-                                <Reveal><h2 className="text-5xl md:text-7xl font-bold tracking-tighter lowercase mb-8">simple pricing.</h2></Reveal>
-                                
-                                {/* PRICING TOGGLE */}
-                                <div className="flex justify-center gap-8 mb-12">
-                                    {['monthly', 'quarterly', 'annually'].map((cycle) => (
-                                        <button 
-                                            key={cycle}
-                                            onClick={() => setBillingCycle(cycle)}
-                                            className={`text-lg lowercase transition-colors ${billingCycle === cycle ? 'text-black font-bold border-b-2 border-black' : 'text-gray-400 hover:text-gray-600'}`}
-                                        >
-                                            {cycle}
-                                            {cycle === 'quarterly' && <span className="text-xs ml-1 text-green-600">-10%</span>}
-                                            {cycle === 'annually' && <span className="text-xs ml-1 text-green-600">-20%</span>}
-                                        </button>
-                                    ))}
-                                </div>
-                                
-                                <Reveal key={billingCycle}> 
-                                    <div className="mb-8">
-                                        <span className="text-6xl md:text-8xl font-bold tracking-tighter">{pricingOptions[billingCycle].price}</span>
-                                        <span className="text-xl text-gray-400 ml-4">{pricingOptions[billingCycle].period}</span>
+                                    <div className="space-y-4">
+                                         {['3d character modeling', 'complex web development', 'video shooting/production', 'long-form copywriting'].map((item, i) => (
+                                            <Reveal key={i} delay={i * 50}>
+                                                <div className="text-xl text-gray-300 border-b border-gray-50 py-4 lowercase">{item}</div>
+                                            </Reveal>
+                                        ))}
                                     </div>
-                                    <p className="text-xl text-gray-500 lowercase">{pricingOptions[billingCycle].desc}</p>
-                                </Reveal>
-                                
-                                {/* CTA INSIDE PRICING */}
-                                <div className="mt-8 mb-24">
-                                    <button onClick={() => setShowCheckout(true)} className="bg-black text-white px-12 py-5 text-xl font-medium rounded-full hover:scale-105 transition-transform duration-300 lowercase">subscribe now</button>
-                                </div>
-                                
-                                <div className="max-w-3xl mx-auto space-y-4 mt-24 text-left">
-                                    {[
-                                    { q: "why not a full-time hire?", a: "a senior designer is one person. dscc is a system. you get creative director oversight and a team of specialists for less than the cost of one employee." },
-                                    { q: "who does the work?", a: "our vetted execution team, guided by creative directors who ensure strategy and brand consistency." },
-                                    { q: "how does the workflow function?", a: "you have an open queue. add as many requests as you need. we work on them sequentially—focusing on one active priority at a time to ensure deep work and quality." },
-                                    { q: "turnaround time?", a: "48 hours on average for standard requests. complex projects are broken into milestones." },
-                                    { q: "contracts?", a: "monthly. pause or cancel anytime you want." },
-                                    { q: "communication?", a: "slack + trello. async and efficient." },
-                                    { q: "meetings?", a: "only if absolutely necessary. we prefer designing." }
-                                    ].map((item, idx) => (
-                                        <Reveal key={idx} delay={idx * 100}>
-                                            <div onClick={() => toggleFaq(idx)} className="group bg-gray-50 hover:bg-black hover:text-white p-8 rounded-3xl cursor-none transition-colors duration-500 cursor-pointer">
-                                                <div className="flex justify-between items-center"><h3 className="text-2xl font-bold lowercase">{item.q}</h3><Icon name={openFaq === idx ? "minus" : "plus"} className="w-6 h-6" /></div>
-                                                <div className={`overflow-hidden transition-all duration-500 ${openFaq === idx ? 'max-h-40 mt-4 opacity-100' : 'max-h-0 opacity-0'}`}><p className="text-lg opacity-80 lowercase">{item.a}</p></div>
-                                            </div>
-                                        </Reveal>
-                                    ))}
                                 </div>
                             </div>
                         </div>
                     </section>
+
+                    {/* EXPERIENCED BY FOUNDERS (Updated Section) */}
+                    <section className="py-32 px-6 lg:px-12 bg-white border-t border-gray-100">
+                        <div className="max-w-screen-2xl mx-auto">
+                             {/* Whisper Header */}
+                             <Reveal>
+                                <h2 className="text-sm font-medium tracking-wide text-gray-400 lowercase mb-12">experienced by founders.</h2>
+                             </Reveal>
+                             
+                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                {/* Card 1: Jasmine (Lead) */}
+                                <Reveal delay={100}>
+                                    <div className="bg-white border border-gray-100 p-10 h-full flex flex-col justify-between rounded-xl hover:-translate-y-1 transition-transform duration-500 cursor-default">
+                                        <p className="text-xl leading-relaxed text-gray-800 lowercase font-medium mb-12">“ds creative collective took our vision and carried it through with consistency and care. the work gave our brand a clear, cohesive identity that showed up across everything we put out.”</p>
+                                        <div>
+                                            <div className="text-sm font-bold tracking-widest text-black uppercase mb-1">— jasmine p. green</div>
+                                            <div className="text-xs text-gray-400 lowercase">founder, inner millionaire™</div>
+                                        </div>
+                                    </div>
+                                </Reveal>
+
+                                {/* Card 2: Swerve */}
+                                <Reveal delay={200}>
+                                    <div className="bg-white border border-gray-100 p-10 h-full flex flex-col justify-between rounded-xl hover:-translate-y-1 transition-transform duration-500 cursor-default">
+                                        <p className="text-xl leading-relaxed text-gray-800 lowercase font-medium mb-12">“exceptional integration into our business, services, and internal process.”</p>
+                                        <div className="text-sm font-bold tracking-widest text-black uppercase">— swerve luxe</div>
+                                    </div>
+                                </Reveal>
+                                
+                                {/* Card 3: Isi */}
+                                <Reveal delay={300}>
+                                    <div className="bg-white border border-gray-100 p-10 h-full flex flex-col justify-between rounded-xl hover:-translate-y-1 transition-transform duration-500 cursor-default">
+                                        <p className="text-xl leading-relaxed text-gray-800 lowercase font-medium mb-12">“the level of professionalism and consideration throughout the process stood out.”</p>
+                                        <div className="text-sm font-bold tracking-widest text-black uppercase">— isi aladejobi</div>
+                                    </div>
+                                </Reveal>
+                             </div>
+                        </div>
+                    </section>
+
+                    {/* PRICING */}
+                    <section className="py-32 px-6 lg:px-12 bg-white border-t border-gray-100">
+                        <div className="max-w-screen-2xl mx-auto text-center">
+                            <Reveal><h2 className="text-5xl md:text-7xl font-bold tracking-tighter lowercase mb-8">simple pricing.</h2></Reveal>
+                            
+                            {/* NEW PRICING TOGGLE */}
+                            <div className="flex justify-center gap-8 mb-12">
+                                {['monthly', 'quarterly', 'annually'].map((cycle) => (
+                                    <button 
+                                        key={cycle}
+                                        onClick={() => setBillingCycle(cycle)}
+                                        className={`text-lg lowercase transition-colors ${billingCycle === cycle ? 'text-black font-bold border-b-2 border-black' : 'text-gray-400 hover:text-gray-600'}`}
+                                    >
+                                        {cycle}
+                                        {cycle === 'quarterly' && <span className="text-xs ml-1 text-green-600">-10%</span>}
+                                        {cycle === 'annually' && <span className="text-xs ml-1 text-green-600">-20%</span>}
+                                    </button>
+                                ))}
+                            </div>
+                            
+                            <Reveal key={billingCycle}> 
+                                <div className="mb-8">
+                                    <span className="text-6xl md:text-8xl font-bold tracking-tighter">{pricingOptions[billingCycle].price}</span>
+                                    <span className="text-xl text-gray-400 ml-4">{pricingOptions[billingCycle].period}</span>
+                                </div>
+                                <p className="text-xl text-gray-500 lowercase">{pricingOptions[billingCycle].desc}</p>
+                            </Reveal>
+                            
+                            {/* NEW CTA INSIDE PRICING */}
+                            <div className="mt-8 mb-24">
+                                <button onClick={() => setShowCheckout(true)} className="bg-black text-white px-12 py-5 text-xl font-medium rounded-full hover:scale-105 transition-transform duration-300 lowercase">subscribe now</button>
+                            </div>
+                            
+                            <div className="max-w-3xl mx-auto space-y-4 mt-24 text-left">
+                                {[
+                                { q: "why not a full-time hire?", a: "a senior designer is one person. dscc is a system. you get creative director oversight and a team of specialists for less than the cost of one employee." },
+                                { q: "who does the work?", a: "our vetted execution team, guided by creative directors who ensure strategy and brand consistency." },
+                                { q: "how does the workflow function?", a: "you have an open queue. add as many requests as you need. we work on them sequentially—focusing on one active priority at a time to ensure deep work and quality." },
+                                { q: "turnaround time?", a: "48 hours on average for standard requests. complex projects are broken into milestones." },
+                                { q: "contracts?", a: "monthly. pause or cancel anytime you want." },
+                                { q: "communication?", a: "slack + trello. async and efficient." },
+                                { q: "meetings?", a: "only if absolutely necessary. we prefer designing." }
+                                ].map((item, idx) => (
+                                    <Reveal key={idx} delay={idx * 100}>
+                                        <div onClick={() => toggleFaq(idx)} className="group bg-gray-50 hover:bg-black hover:text-white p-8 rounded-3xl cursor-none transition-colors duration-500 cursor-pointer">
+                                            <div className="flex justify-between items-center"><h3 className="text-2xl font-bold lowercase">{item.q}</h3><Icon name={openFaq === idx ? "minus" : "plus"} className="w-6 h-6" /></div>
+                                            <div className={`overflow-hidden transition-all duration-500 ${openFaq === idx ? 'max-h-40 mt-4 opacity-100' : 'max-h-0 opacity-0'}`}><p className="text-lg opacity-80 lowercase">{item.a}</p></div>
+                                        </div>
+                                    </Reveal>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                    
+                    {/* FOOTER REMOVED FOR EMBED INTEGRATION */}
                 </div>
             );
         };
