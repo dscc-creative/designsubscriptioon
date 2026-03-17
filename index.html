@@ -92,6 +92,27 @@
 </head>
 <body class="bg-white text-black selection:bg-black selection:text-white">
 
+    <!-- === SEO FALLBACK FOR STRICT CRAWLERS === -->
+    <noscript>
+        <div style="padding: 20px; font-family: sans-serif;">
+            <h1>dscc | creative department</h1>
+            <p>your brand. executed.</p>
+            <p>creative direction and senior execution for founders who need visual authority, clarity, and true brand stewardship. for established brands generating $500k+ annually.</p>
+            
+            <h2>scope of work</h2>
+            <ul>
+                <li>brand identity systems</li>
+                <li>strategic presentation design</li>
+                <li>web & digital ui</li>
+                <li>social visual direction</li>
+                <li>marketing collateral</li>
+            </ul>
+            
+            <h2>simple pricing</h2>
+            <p>$5,000 / month. pause anytime. guided by creative directors. executed by specialists. we ensure your brand signals value at every interaction.</p>
+        </div>
+    </noscript>
+
     <div id="custom-cursor" class="custom-cursor hidden md:block"></div>
 
     <!-- HIERARCHICAL EDITORIAL HERO -->
@@ -124,48 +145,32 @@
                 </button>
             </div>
         </div>
-
-        <!-- 5. The Testimonial (Anchored to bottom) -->
-        <div class="absolute bottom-8 left-0 w-full px-6 flex justify-center z-10">
-            <div class="reveal max-w-xl text-center" style="transition-delay: 700ms;">
-                <p class="text-xs md:text-sm font-medium text-black leading-relaxed lowercase mb-2">
-                    “we’ve worked with ds creative collective for four years and have seen clear growth in both our brand and overall reputation.”
-                </p>
-                <p class="text-[10px] font-bold text-gray-400 lowercase tracking-widest">— portia m.</p>
-            </div>
-        </div>
     </header>
 
-    <!-- BLACK POSITIONING SECTION -->
-    <section class="bg-black text-white py-32 md:py-48 px-6 lg:px-12 relative overflow-hidden border-b border-black/10">
-        <div class="max-w-7xl mx-auto text-center space-y-16 relative z-10">
+    <!-- EDITORIAL QUOTE SECTION -->
+    <section class="bg-black text-white py-32 md:py-48 px-6 lg:px-12 relative overflow-hidden border-b border-white/10">
+        <div class="max-w-6xl mx-auto text-center flex flex-col items-center justify-center">
             <div class="reveal">
-                <h2 class="text-[10vw] md:text-[8vw] font-medium tracking-tighter leading-[0.8] lowercase text-white">
-                    you don’t need another freelancer.
-                    <span class="block text-white/40 mt-4 md:mt-8">you need a creative department.</span>
-                </h2>
-            </div>
-            <div class="reveal" style="transition-delay: 200ms;"><div class="w-px h-32 bg-white/20 mx-auto"></div></div>
-            <div class="reveal" style="transition-delay: 400ms;">
-                <p class="text-xl md:text-2xl text-white max-w-2xl mx-auto lowercase leading-relaxed font-medium">
-                    guided by creative directors. executed by specialists. we ensure your brand signals value at every interaction—from high-stakes presentations to day-to-day visual output.
+                <p class="text-[8vw] md:text-[5vw] font-bold italic tracking-tighter leading-[0.9] lowercase text-white mb-12">
+                    “we’ve worked with ds creative collective for four years and have seen clear growth in both our brand and overall reputation.”
                 </p>
             </div>
-        </div>
-        <div class="animate-marquee flex gap-16 whitespace-nowrap opacity-30 mt-32 text-white">
-            <!-- Repeated blocks for endless scroll -->
-            <div class="flex items-center gap-16 text-sm font-bold tracking-widest lowercase"><span>brand identity systems</span><span>•</span><span>strategic presentation design</span><span>•</span><span>web & digital ui</span><span>•</span><span>social visual direction</span><span>•</span><span>marketing collateral</span><span>•</span></div>
-            <div class="flex items-center gap-16 text-sm font-bold tracking-widest lowercase"><span>brand identity systems</span><span>•</span><span>strategic presentation design</span><span>•</span><span>web & digital ui</span><span>•</span><span>social visual direction</span><span>•</span><span>marketing collateral</span><span>•</span></div>
-            <div class="flex items-center gap-16 text-sm font-bold tracking-widest lowercase"><span>brand identity systems</span><span>•</span><span>strategic presentation design</span><span>•</span><span>web & digital ui</span><span>•</span><span>social visual direction</span><span>•</span><span>marketing collateral</span><span>•</span></div>
+            <div class="reveal" style="transition-delay: 200ms;">
+                <p class="text-xs font-bold tracking-widest text-gray-500 lowercase">
+                    — portia m.
+                </p>
+            </div>
         </div>
     </section>
 
-    <!-- 3D LAPTOP SCROLL SEQUENCE -->
+    <!-- 3D LAPTOP SCROLL SEQUENCE (AUTHORITY BLOCK - MOVED IMMEDIATELY UNDER HERO) -->
     <div id="laptop-container" class="h-[150vh] md:h-[200vh] relative w-full bg-white border-b border-black/10">
         <div class="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-white" style="perspective: 1200px;">
             
-            <div id="laptop-overhead" class="absolute z-10 text-center top-12 md:top-24 w-full px-6 transition-opacity duration-75">
-                <h2 class="text-xs font-bold lowercase tracking-widest text-gray-500">led by creative directors with enterprise-level experience</h2>
+            <div id="laptop-overhead" class="absolute z-10 text-center top-16 md:top-24 w-full px-6 lg:px-12 transition-opacity duration-75">
+                <h2 class="text-[12vw] md:text-[7vw] lg:text-[5.5vw] font-bold lowercase tracking-tighter leading-[0.85] text-black">
+                    led by creative directors with enterprise-level experience
+                </h2>
             </div>
 
             <div id="laptop-element" class="relative flex flex-col items-center justify-center origin-center mt-12 md:mt-0 w-full max-w-[800px] px-4" style="transform-style: preserve-3d;">
@@ -206,6 +211,30 @@
             </div>
         </div>
     </div>
+
+    <!-- BLACK POSITIONING SECTION -->
+    <section class="bg-black text-white py-32 md:py-48 px-6 lg:px-12 relative overflow-hidden border-b border-black/10">
+        <div class="max-w-7xl mx-auto text-center space-y-16 relative z-10">
+            <div class="reveal">
+                <h2 class="text-[10vw] md:text-[8vw] font-medium tracking-tighter leading-[0.8] lowercase text-white">
+                    you don’t need another freelancer.
+                    <span class="block text-white/40 mt-4 md:mt-8">you need a creative department.</span>
+                </h2>
+            </div>
+            <div class="reveal" style="transition-delay: 200ms;"><div class="w-px h-32 bg-white/20 mx-auto"></div></div>
+            <div class="reveal" style="transition-delay: 400ms;">
+                <p class="text-xl md:text-2xl text-white max-w-2xl mx-auto lowercase leading-relaxed font-medium">
+                    guided by creative directors. executed by specialists. we ensure your brand signals value at every interaction—from high-stakes presentations to day-to-day visual output.
+                </p>
+            </div>
+        </div>
+        <div class="animate-marquee flex gap-16 whitespace-nowrap opacity-30 mt-32 text-white">
+            <!-- Repeated blocks for endless scroll -->
+            <div class="flex items-center gap-16 text-sm font-bold tracking-widest lowercase"><span>brand identity systems</span><span>•</span><span>strategic presentation design</span><span>•</span><span>web & digital ui</span><span>•</span><span>social visual direction</span><span>•</span><span>marketing collateral</span><span>•</span></div>
+            <div class="flex items-center gap-16 text-sm font-bold tracking-widest lowercase"><span>brand identity systems</span><span>•</span><span>strategic presentation design</span><span>•</span><span>web & digital ui</span><span>•</span><span>social visual direction</span><span>•</span><span>marketing collateral</span><span>•</span></div>
+            <div class="flex items-center gap-16 text-sm font-bold tracking-widest lowercase"><span>brand identity systems</span><span>•</span><span>strategic presentation design</span><span>•</span><span>web & digital ui</span><span>•</span><span>social visual direction</span><span>•</span><span>marketing collateral</span><span>•</span></div>
+        </div>
+    </section>
 
     <!-- SELECTED WORK -->
     <section class="py-32 md:py-48 bg-white border-b border-black/10 relative z-20">
@@ -279,6 +308,15 @@
             </div>
             
             <div class="min-w-[5vw] shrink-0"></div>
+        </div>
+    </section>
+
+    <!-- PRICING (Moved up for Self-Qualification) -->
+    <section class="py-32 md:py-48 px-6 lg:px-16 bg-neutral-50 border-b border-black/10 relative z-20">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="reveal"><h2 class="text-[16vw] md:text-[12vw] font-bold text-black lowercase tracking-tighter mb-8 leading-[0.75]">simple<br/><span class="text-black/40">pricing.</span></h2></div>
+            <div class="reveal" style="transition-delay: 200ms;"><p class="text-2xl text-black lowercase mb-8">$5,000 / month. pause anytime.</p></div>
+            <div class="reveal" style="transition-delay: 300ms;"><button onclick="openAppModal()" class="bg-black text-white px-12 py-5 text-sm font-bold lowercase tracking-widest hover:bg-gray-900 transition-colors rounded-none">apply for membership</button></div>
         </div>
     </section>
 
@@ -375,15 +413,13 @@
         </div>
     </section>
 
-    <!-- PRICING & FAQ -->
+    <!-- FAQ (Remaining section at bottom) -->
     <section class="py-32 md:py-48 px-6 lg:px-16 bg-white relative z-20 pb-64">
         <div class="max-w-4xl mx-auto text-center mb-24">
-            <div class="reveal"><h2 class="text-[16vw] md:text-[12vw] font-bold text-black lowercase tracking-tighter mb-8 leading-[0.75]">simple<br/><span class="text-black/40">pricing.</span></h2></div>
-            <div class="reveal" style="transition-delay: 200ms;"><p class="text-2xl text-black lowercase mb-8">$5,000 / month.</p></div>
-            <div class="reveal" style="transition-delay: 300ms;"><button onclick="openAppModal()" class="bg-black text-white px-12 py-5 text-sm font-bold lowercase tracking-widest hover:bg-gray-900 transition-colors rounded-none">apply for membership</button></div>
+            <div class="reveal"><h2 class="text-[12vw] md:text-[8vw] font-bold text-black lowercase tracking-tighter mb-8 leading-[0.8]">common<br/><span class="text-black/40">questions.</span></h2></div>
         </div>
 
-        <div class="max-w-3xl mx-auto space-y-0 border-t border-black/10 mt-32">
+        <div class="max-w-3xl mx-auto space-y-0 border-t border-black/10">
             <!-- FAQ 1 -->
             <div class="reveal" style="transition-delay: 100ms;">
                 <div onclick="toggleFaq(1)" class="py-8 border-b border-black/10 cursor-none group">
