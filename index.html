@@ -115,8 +115,9 @@
 
     <div id="custom-cursor" class="custom-cursor hidden md:block"></div>
 
-    <!-- HIERARCHICAL EDITORIAL HERO -->
-    <header class="relative w-full min-h-[90vh] md:h-screen flex flex-col items-center justify-center bg-white px-6 border-b border-black/10">
+    <!-- HIERARCHICAL EDITORIAL HERO (Clean text only) -->
+    <header class="relative w-full min-h-[90vh] md:h-screen flex flex-col items-center justify-center bg-white px-6 overflow-hidden">
+        
         <div class="relative z-10 flex flex-col items-center justify-center w-full max-w-5xl mx-auto mt-12 md:mt-0">
             <!-- 1. Eyebrow -->
             <div class="reveal" style="transition-delay: 100ms;">
@@ -147,6 +148,25 @@
         </div>
     </header>
 
+    <!-- NEW EDITORIAL IMAGE TRANSITION (Scroll Sequence) -->
+    <div id="transition-container" class="relative w-full h-[150vh] md:h-[200vh] bg-white border-t border-b border-black/10">
+        <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden bg-neutral-50/50">
+            
+            <!-- Img 1: Donata (Left) -->
+            <img id="trans-img-1" src="https://i.postimg.cc/bwBm0mDZ/Donata-Product-Shoot.png" 
+                 class="absolute w-[50vw] md:w-[28vw] left-[2%] md:left-[10%] shadow-[0_30px_60px_rgba(0,0,0,0.2)] border border-black/5 object-contain" style="opacity: 0;" />
+                 
+            <!-- Img 2: Isi (Right) -->
+            <img id="trans-img-2" src="https://i.postimg.cc/3NFBPZXN/Isi-fulfilled-flyer.jpg" 
+                 class="absolute w-[45vw] md:w-[25vw] right-[5%] md:right-[12%] shadow-[0_30px_60px_rgba(0,0,0,0.2)] border border-black/5 object-contain" style="opacity: 0;" />
+                 
+            <!-- Img 3: Inner Millionaire (Center, Front) -->
+            <img id="trans-img-3" src="https://i.postimg.cc/tJMjpb54/inner_millionaire_street_wild_post.png" 
+                 class="absolute w-[65vw] md:w-[34vw] z-10 shadow-[0_40px_80px_rgba(0,0,0,0.3)] border border-black/5 object-contain" style="opacity: 0;" />
+                 
+        </div>
+    </div>
+
     <!-- EDITORIAL QUOTE SECTION -->
     <section class="bg-black text-white py-32 md:py-48 px-6 lg:px-12 relative overflow-hidden border-b border-white/10">
         <div class="max-w-6xl mx-auto text-center flex flex-col items-center justify-center">
@@ -163,7 +183,7 @@
         </div>
     </section>
 
-    <!-- 3D LAPTOP SCROLL SEQUENCE (AUTHORITY BLOCK - MOVED IMMEDIATELY UNDER HERO) -->
+    <!-- 3D LAPTOP SCROLL SEQUENCE (AUTHORITY BLOCK) -->
     <div id="laptop-container" class="h-[150vh] md:h-[200vh] relative w-full bg-white border-b border-black/10">
         <div class="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-white" style="perspective: 1200px;">
             
@@ -229,7 +249,6 @@
             </div>
         </div>
         <div class="animate-marquee flex gap-16 whitespace-nowrap opacity-30 mt-32 text-white">
-            <!-- Repeated blocks for endless scroll -->
             <div class="flex items-center gap-16 text-sm font-bold tracking-widest lowercase"><span>brand identity systems</span><span>•</span><span>strategic presentation design</span><span>•</span><span>web & digital ui</span><span>•</span><span>social visual direction</span><span>•</span><span>marketing collateral</span><span>•</span></div>
             <div class="flex items-center gap-16 text-sm font-bold tracking-widest lowercase"><span>brand identity systems</span><span>•</span><span>strategic presentation design</span><span>•</span><span>web & digital ui</span><span>•</span><span>social visual direction</span><span>•</span><span>marketing collateral</span><span>•</span></div>
             <div class="flex items-center gap-16 text-sm font-bold tracking-widest lowercase"><span>brand identity systems</span><span>•</span><span>strategic presentation design</span><span>•</span><span>web & digital ui</span><span>•</span><span>social visual direction</span><span>•</span><span>marketing collateral</span><span>•</span></div>
@@ -311,7 +330,7 @@
         </div>
     </section>
 
-    <!-- PRICING (Moved up for Self-Qualification) -->
+    <!-- PRICING (Self-Qualification) -->
     <section class="py-32 md:py-48 px-6 lg:px-16 bg-neutral-50 border-b border-black/10 relative z-20">
         <div class="max-w-4xl mx-auto text-center">
             <div class="reveal"><h2 class="text-[16vw] md:text-[12vw] font-bold text-black lowercase tracking-tighter mb-8 leading-[0.75]">simple<br/><span class="text-black/40">pricing.</span></h2></div>
@@ -413,28 +432,25 @@
         </div>
     </section>
 
-    <!-- FAQ (Remaining section at bottom) -->
+    <!-- FAQ -->
     <section class="py-32 md:py-48 px-6 lg:px-16 bg-white relative z-20 pb-64">
         <div class="max-w-4xl mx-auto text-center mb-24">
             <div class="reveal"><h2 class="text-[12vw] md:text-[8vw] font-bold text-black lowercase tracking-tighter mb-8 leading-[0.8]">common<br/><span class="text-black/40">questions.</span></h2></div>
         </div>
 
         <div class="max-w-3xl mx-auto space-y-0 border-t border-black/10">
-            <!-- FAQ 1 -->
             <div class="reveal" style="transition-delay: 100ms;">
                 <div onclick="toggleFaq(1)" class="py-8 border-b border-black/10 cursor-none group">
                     <div class="flex justify-between items-center"><h3 class="text-2xl md:text-3xl font-bold text-black lowercase">why not a full-time hire?</h3><div id="faq-icon-1"><i data-lucide="plus" class="w-5 h-5 text-gray-500"></i></div></div>
                     <div id="faq-content-1" class="overflow-hidden transition-all duration-500 max-h-0 opacity-0"><p class="text-lg font-sans text-black lowercase">a senior designer is one person. dscc is a system. you get creative director oversight and a team of specialists for less than the cost of one employee.</p></div>
                 </div>
             </div>
-            <!-- FAQ 2 -->
             <div class="reveal" style="transition-delay: 200ms;">
                 <div onclick="toggleFaq(2)" class="py-8 border-b border-black/10 cursor-none group">
                     <div class="flex justify-between items-center"><h3 class="text-2xl md:text-3xl font-bold text-black lowercase">who does the work?</h3><div id="faq-icon-2"><i data-lucide="plus" class="w-5 h-5 text-gray-500"></i></div></div>
                     <div id="faq-content-2" class="overflow-hidden transition-all duration-500 max-h-0 opacity-0"><p class="text-lg font-sans text-black lowercase">our vetted execution team, guided by creative directors who ensure strategy and brand consistency.</p></div>
                 </div>
             </div>
-            <!-- FAQ 3 -->
             <div class="reveal" style="transition-delay: 300ms;">
                 <div onclick="toggleFaq(3)" class="py-8 border-b border-black/10 cursor-none group">
                     <div class="flex justify-between items-center"><h3 class="text-2xl md:text-3xl font-bold text-black lowercase">is it really unlimited?</h3><div id="faq-icon-3"><i data-lucide="plus" class="w-5 h-5 text-gray-500"></i></div></div>
@@ -467,7 +483,7 @@
         </div>
     </div>
 
-    <!-- HIDDEN PROJECT MODALS (Hardcoded for perfect SEO) -->
+    <!-- HIDDEN PROJECT MODALS -->
     <!-- Project 1: Signature Homes -->
     <div id="project-1" class="hidden fixed inset-0 z-[200] bg-white overflow-y-auto">
         <div class="fixed top-0 left-0 w-full p-6 md:p-12 flex justify-between items-center z-50 mix-blend-difference text-white pointer-events-none">
@@ -576,7 +592,12 @@
             }, { threshold: 0.1 });
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-            // 4. Laptop 3D Scroll Parallax
+            // 4. Scroll Parallax Sequences (Transition Images & Laptop)
+            const transContainer = document.getElementById('transition-container');
+            const transImg1 = document.getElementById('trans-img-1');
+            const transImg2 = document.getElementById('trans-img-2');
+            const transImg3 = document.getElementById('trans-img-3');
+            
             const laptopContainer = document.getElementById('laptop-container');
             const laptopElement = document.getElementById('laptop-element');
             const laptopText = document.getElementById('laptop-text');
@@ -584,27 +605,67 @@
             const laptopOverhead = document.getElementById('laptop-overhead');
 
             window.addEventListener('scroll', () => {
-                if (!laptopContainer) return;
-                const rect = laptopContainer.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-                const scrollable = rect.height - windowHeight;
-                let p = 0;
                 
-                if (scrollable > 0) {
-                    p = -rect.top / scrollable;
+                // --- IMAGE TRANSITION SEQUENCE ---
+                if (transContainer) {
+                    const rect = transContainer.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    const scrollable = rect.height - windowHeight;
+                    let pt = 0;
+                    
+                    if (scrollable > 0) {
+                        pt = -rect.top / scrollable;
+                    }
+                    pt = isNaN(pt) ? 0 : Math.max(0, Math.min(1, pt));
+
+                    // Img 1: Left (Donata)
+                    let op1 = pt < 0.15 ? pt / 0.15 : (pt > 0.6 ? Math.max(0, 1 - (pt - 0.6)/0.15) : 1);
+                    let y1 = 150 - (pt * 300);
+                    let rot1 = -12 + (pt * 8);
+                    if (transImg1) {
+                        transImg1.style.opacity = op1;
+                        transImg1.style.transform = `translateY(${y1}px) rotate(${rot1}deg)`;
+                    }
+
+                    // Img 2: Right (Isi)
+                    let op2 = pt < 0.1 ? 0 : (pt < 0.25 ? (pt - 0.1) / 0.15 : (pt > 0.7 ? Math.max(0, 1 - (pt - 0.7)/0.15) : 1));
+                    let y2 = 200 - (pt * 400);
+                    let rot2 = 15 - (pt * 10);
+                    if (transImg2) {
+                        transImg2.style.opacity = op2;
+                        transImg2.style.transform = `translateY(${y2}px) rotate(${rot2}deg)`;
+                    }
+
+                    // Img 3: Center (Inner Millionaire)
+                    let op3 = pt < 0.2 ? 0 : (pt < 0.35 ? (pt - 0.2) / 0.15 : (pt > 0.8 ? Math.max(0, 1 - (pt - 0.8)/0.15) : 1));
+                    let y3 = 250 - (pt * 500);
+                    let rot3 = -5 + (pt * 12);
+                    if (transImg3) {
+                        transImg3.style.opacity = op3;
+                        transImg3.style.transform = `translateY(${y3}px) rotate(${rot3}deg) scale(${1 + pt*0.1})`;
+                    }
                 }
+
+                // --- 3D LAPTOP SEQUENCE ---
+                if (!laptopContainer) return;
+                const lRect = laptopContainer.getBoundingClientRect();
+                const lWindowHeight = window.innerHeight;
+                const lScrollable = lRect.height - lWindowHeight;
+                let pl = 0;
                 
-                p = isNaN(p) ? 0 : Math.max(0, Math.min(1, p));
+                if (lScrollable > 0) {
+                    pl = -lRect.top / lScrollable;
+                }
+                pl = isNaN(pl) ? 0 : Math.max(0, Math.min(1, pl));
 
-                // Same math values used in React
-                const scale = 1 + Math.pow(p, 4) * 25;
-                const rotateX = -5 + (p * 25);
-                const glareOffset = -100 + (p * 250);
-                const textParallaxY = p * 30;
+                const scale = 1 + Math.pow(pl, 4) * 25;
+                const rotateX = -5 + (pl * 25);
+                const glareOffset = -100 + (pl * 250);
+                const textParallaxY = pl * 30;
 
-                const textOpacity = p < 0.3 ? 1 : Math.max(0, 1 - ((p - 0.3) * 5));
-                const textBlur = p < 0.3 ? 0 : Math.min(12, (p - 0.3) * 30);
-                const overheadOpacity = Math.max(0, 1 - p * 5);
+                const textOpacity = pl < 0.3 ? 1 : Math.max(0, 1 - ((pl - 0.3) * 5));
+                const textBlur = pl < 0.3 ? 0 : Math.min(12, (pl - 0.3) * 30);
+                const overheadOpacity = Math.max(0, 1 - pl * 5);
 
                 if (laptopElement) laptopElement.style.transform = `scale(${scale}) rotateX(${rotateX}deg)`;
                 if (laptopText) {
@@ -622,7 +683,6 @@
             const modal = document.getElementById('app-modal');
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
-            // slight delay to allow display block to apply before animating opacity
             setTimeout(() => modal.classList.remove('opacity-0'), 10);
         }
         function closeAppModal() {
@@ -631,10 +691,9 @@
             setTimeout(() => {
                 modal.classList.add('hidden');
                 document.body.style.overflow = 'auto';
-            }, 500); // match transition duration
+            }, 500); 
         }
 
-        // Project Controllers
         function openProject(id) {
             const modal = document.getElementById(id);
             if(modal) {
